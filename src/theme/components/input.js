@@ -36,23 +36,6 @@ export const inputStyles = {
             _placeholder: { color: "secondaryGray.600", fontWeight: "400" },
           },
         }),
-        authSecondary: (props) => ({
-          field: {
-            bg: "transparent",
-            border: "1px solid",
-            borderColor: "secondaryGray.100",
-            borderRadius: "16px",
-            _placeholder: { color: "secondaryGray.600" },
-          },
-        }),
-        search: (props) => ({
-          field: {
-            border: "none",
-            py: "11px",
-            borderRadius: "inherit",
-            _placeholder: { color: "secondaryGray.600" },
-          },
-        }),
       },
     },
     NumberInput: {
@@ -63,41 +46,13 @@ export const inputStyles = {
       },
 
       variants: {
-        main: (props) => ({
+        main: (_props) => ({
           field: {
             bg: "transparent",
             border: "1px solid",
 
             borderColor: "secondaryGray.100",
             borderRadius: "16px",
-            _placeholder: { color: "secondaryGray.600" },
-          },
-        }),
-        auth: (props) => ({
-          field: {
-            bg: "transparent",
-            border: "1px solid",
-
-            borderColor: "secondaryGray.100",
-            borderRadius: "16px",
-            _placeholder: { color: "secondaryGray.600" },
-          },
-        }),
-        authSecondary: (props) => ({
-          field: {
-            bg: "transparent",
-            border: "1px solid",
-
-            borderColor: "secondaryGray.100",
-            borderRadius: "16px",
-            _placeholder: { color: "secondaryGray.600" },
-          },
-        }),
-        search: (props) => ({
-          field: {
-            border: "none",
-            py: "11px",
-            borderRadius: "inherit",
             _placeholder: { color: "secondaryGray.600" },
           },
         }),
@@ -136,7 +91,7 @@ export const inputStyles = {
             color: "secondaryGray.600",
           },
         }),
-        subtle: (props) => ({
+        subtle: (_props) => ({
           box: {
             width: "unset",
           },
@@ -204,19 +159,5 @@ export const inputStyles = {
         }),
       },
     },
-    // PinInputField: {
-    //   variants: {
-    //     main: (props) => ({
-    //       field: {
-    //         bg: "red !important",
-    //         border: "1px solid",
-    //         color: mode("secondaryGray.900", "white")(props),
-    //         borderColor: mode("secondaryGray.100", "whiteAlpha.100")(props),
-    //         borderRadius: "16px",
-    //         _placeholder: { color: "secondaryGray.600" },
-    //       },
-    //     }),
-    //   },
-    // },
-  },
+                                                          },
 };
