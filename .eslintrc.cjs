@@ -11,5 +11,7 @@ module.exports = {
     ecmaVersion: 'latest',
   },
   plugins: ['@typescript-eslint', 'snarkyjs'],
-  rules: {},
+  rules: {
+    'snarkyjs/no-greater-storage-limit-in-circuit': 'off',
+  },
 };

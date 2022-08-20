@@ -1,18 +1,18 @@
-import { Add } from './Add';
+import { Contract } from './Contract';
 import {
   isReady,
   shutdown,
-  Field,
   Mina,
   PrivateKey,
   PublicKey,
   Party,
 } from 'snarkyjs';
+import FilePart from './FilePart';
 
 /*
- * This file specifies how to test the `Add` example smart contract. It is safe to delete this file and replace 
- * with your own tests. 
- * 
+ * This file specifies how to test the `Add` example smart contract. It is safe to delete this file and replace
+ * with your own tests.
+ *
  * See https://docs.minaprotocol.com/zkapps for more info.
  */
 
@@ -23,28 +23,33 @@ function createLocalBlockchain() {
 }
 
 async function localDeploy(
-  zkAppInstance: Add,
+  zkAppInstance: Contract,
   zkAppPrivkey: PrivateKey,
   deployerAccount: PrivateKey
 ) {
   const txn = await Mina.transaction(deployerAccount, () => {
     Party.fundNewAccount(deployerAccount);
     zkAppInstance.deploy({ zkappKey: zkAppPrivkey });
-    zkAppInstance.init();
   });
   await txn.send().wait();
 }
 
-describe('Add', () => {
+describe('Contract', () => {
   let deployerAccount: PrivateKey,
     zkAppAddress: PublicKey,
-    zkAppPrivateKey: PrivateKey;
+    zkAppPrivateKey: PrivateKey,
+    filePart: FilePart;
+
+  const ipfsHash =
+    'bafybeic46up5ny7esfxes7zuvq74c7uirdn6bnwl6lwvryrnuhaogxpj4e';
 
   beforeEach(async () => {
     await isReady;
     deployerAccount = createLocalBlockchain();
     zkAppPrivateKey = PrivateKey.random();
     zkAppAddress = zkAppPrivateKey.toPublicKey();
+
+    filePart = new FilePart(zkAppPrivateKey.toPublicKey(), ipfsHash);
   });
 
   afterAll(async () => {
@@ -54,23 +59,20 @@ describe('Add', () => {
     setTimeout(shutdown, 0);
   });
 
-  it('generates and deploys the `Add` smart contract', async () => {
-    const zkAppInstance = new Add(zkAppAddress);
-    await localDeploy(zkAppInstance, zkAppPrivateKey, deployerAccount);
-    const num = zkAppInstance.num.get();
-    expect(num).toEqual(Field.one);
-  });
+  it('validate decrypt', async () => {
+    const zkAppInstance = new Contract(zkAppAddress);
+    let hash = '';
+    console.log('filePart', JSON.stringify(filePart));
 
-  it('correctly updates the num state on the `Add` smart contract', async () => {
-    const zkAppInstance = new Add(zkAppAddress);
     await localDeploy(zkAppInstance, zkAppPrivateKey, deployerAccount);
+
     const txn = await Mina.transaction(deployerAccount, () => {
-      zkAppInstance.update();
+      hash = zkAppInstance.validate(filePart, zkAppPrivateKey);
+      console.log('hash', hash);
       zkAppInstance.sign(zkAppPrivateKey);
     });
     await txn.send().wait();
 
-    const updatedNum = zkAppInstance.num.get();
-    expect(updatedNum).toEqual(Field(3));
+    expect(ipfsHash).toEqual(hash);
   });
 });
