@@ -2,6 +2,7 @@
   "name": "vaultmi",
   "version": "1.0.0",
   "dependencies": {
+    "@134dd3v/secrets.js": "^2.0.0",
     "@chakra-ui/icons": "^1.1.5",
     "@chakra-ui/react": "1.8.8",
     "@chakra-ui/system": "^1.12.1",
