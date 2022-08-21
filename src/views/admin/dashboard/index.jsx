@@ -6,6 +6,7 @@ import Upload from "views/admin/dashboard/components/Upload";
 import banner from "assets/img/auth/banner.png";
 import React, { useState } from "react";
 import { walletFormat } from "../../../utils/tools";
+import Download from "./components/Download";
 
 export default function Overview() {
   const [address, setAddress] = useState("");
@@ -25,7 +26,7 @@ export default function Overview() {
       <Grid
         templateColumns={{
           base: "1fr",
-          lg: "1.34fr 1fr 1.62fr",
+          lg: "1.32fr 1.32fr 1.32fr",
         }}
         templateRows={{
           base: "repeat(2, 1fr)",
@@ -43,18 +44,23 @@ export default function Overview() {
           followers="9.7k"
           following="274"
         />
-        <Storage
-          gridArea={{ base: "2 / 1 / 3 / 2", lg: "1 / 2 / 2 / 3" }}
-          used={0}
-          total={1000}
-        />
+        {/*<Storage*/}
+        {/*  gridArea={{ base: "2 / 1 / 3 / 2", lg: "1 / 2 / 2 / 3" }}*/}
+        {/*  used={0}*/}
+        {/*  total={1000}*/}
+        {/*/>*/}
         <Upload
-          gridArea={{
-            base: "3 / 1 / 4 / 2",
-            lg: "1 / 3 / 2 / 4",
-          }}
+
           minH={{ base: "auto", lg: "420px", "2xl": "365px" }}
           pe="20px"
+          address={address}
+          pb={{ base: "100px", lg: "20px" }}
+        />
+        <Download
+
+          minH={{ base: "auto", lg: "420px", "2xl": "365px" }}
+          pe="20px"
+          address={address}
           pb={{ base: "100px", lg: "20px" }}
         />
       </Grid>

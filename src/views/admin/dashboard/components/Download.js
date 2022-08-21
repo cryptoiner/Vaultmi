@@ -6,31 +6,25 @@ import {
 import Card from "components/card/Card.js";
 import React, { useState } from "react";
 import { Input, Button } from '@chakra-ui/react'
-import { uploadFile } from "../../../../utils/uploadFile";
+import { downloadFile, uploadFile } from "../../../../utils/uploadFile";
 
-export default function Upload(props) {
+export default function Download(props) {
   const { used, total, address, ...rest } = props;
   const textColorPrimary = useColorModeValue("secondaryGray.900", "white");
   const [selectedFile, setSelectedFile] = useState();
-  const [selectedAddress, setSelectedAddress] = useState();
+  const [selectedHash, setSelectedHash] = useState();
   const [isSelected, setIsSelected] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
   const [uploadStatus, setUploadStatus] = useState('')
 
-  const changeHandler = (event) => {
+  const changeHandlerHash = (event) => {
     setUploadStatus('');
-    setSelectedFile(event.target.files[0]);
-    setIsSelected(true);
-  };
-
-  const changeHandlerAddress = (event) => {
-    setUploadStatus('');
-    setSelectedAddress(event.target.value);
+    setSelectedHash(event.target.value);
   };
 
   const handleSubmission = async () => {
     setIsLoading(true)
-    const cid = await uploadFile(address,selectedAddress)
+    const cid = await downloadFile(address,selectedAddress)
     setIsLoading(false)
     if(!!cid) {
       setUploadStatus('Uploaded')
@@ -50,20 +44,13 @@ export default function Upload(props) {
             fontSize="2xl"
             mt={{ base: "20px", "2xl": "50px" }}
           >
-            Upload a file
+            Download a file
           </Text>
           <div style={{paddingTop:'20px'}}>
-            <Input variant="filled" type="file" name="file" onChange={changeHandler} />
-            {isSelected && (
-              <div>
-                <p>Size: {(selectedFile.size/1048576).toFixed(2)} Mb</p>
-              </div>
-            )}
-            <br/>
-            <Input placeholder={"Address"} variant="filled" type="text" name="text" onChange={changeHandlerAddress} />
+            <Input placeholder={"Hash"} variant="filled" type="text" name="text" onChange={changeHandlerHash} />
             <div>
               <Button variant="brand" onClick={handleSubmission}>
-                {isLoading ? 'Loading' : 'Upload'}
+                {isLoading ? 'Loading' : 'Download'}
               </Button>
             </div>
           </div>
