@@ -28,7 +28,7 @@ export default function Banner(props) {
       <Box w="100%" mt="auto">
         <Flex w="100%" justify="space-between" mb="10px">
           <Text color={textColorSecondary} fontSize="sm" maxW="40%">
-            {used} GB
+            {used} GB Used
           </Text>
           <Text color={textColorSecondary} fontSize="sm" maxW="40%">
             {total} GB

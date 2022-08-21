@@ -6,3 +6,9 @@ body {
 option {
   color: black;
 }
+
+input[type=file]::file-selector-button {
+  background-color: black;
+  color: white;
+  border-radius: 10px;
+}

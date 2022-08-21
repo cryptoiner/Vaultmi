@@ -1,50 +1,41 @@
 import {
-  Box,
-  Button,
   Flex,
-  Icon,
   Text,
-  useColorModeValue,
+  useColorModeValue
 } from "@chakra-ui/react";
 import Card from "components/card/Card.js";
-import React from "react";
-import { MdUpload } from "react-icons/md";
-import Dropzone from "./Dropzone";
+import React, { useState } from "react";
+import { Input, Button } from '@chakra-ui/react'
+import { uploadFile } from "../../../../utils/uploadFile";
 
 export default function Upload(props) {
   const { used, total, ...rest } = props;
   const textColorPrimary = useColorModeValue("secondaryGray.900", "white");
-  const brandColor = useColorModeValue("brand.500", "white");
+  const [selectedFile, setSelectedFile] = useState();
+  const [isSelected, setIsSelected] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
+  const [uploadStatus, setUploadStatus] = useState('')
+
+  const changeHandler = (event) => {
+    setUploadStatus('');
+    setSelectedFile(event.target.files[0]);
+    setIsSelected(true);
+  };
+
+  const handleSubmission = async () => {
+    setIsLoading(true)
+    const cid = await uploadFile(selectedFile)
+    setIsLoading(false)
+    if(!!cid) {
+      setUploadStatus('Uploaded')
+    }else{
+      setUploadStatus('Failed')
+    }
+  };
+
   return (
     <Card {...rest} mb="20px" align="center" p="20px">
       <Flex h="100%" direction={{ base: "column", "2xl": "row" }}>
-        <Dropzone
-          w={{ base: "100%", "2xl": "268px" }}
-          me="36px"
-          maxH={{ base: "60%", lg: "50%", "2xl": "100%" }}
-          minH={{ base: "60%", lg: "50%", "2xl": "100%" }}
-          content={
-            <Box>
-              <Icon as={MdUpload} w="80px" h="80px" color={brandColor} />
-              <Flex justify="center" mx="auto" mb="12px">
-                <Text fontSize="xl" fontWeight="700" color={brandColor}>
-                  Upload Files
-                </Text>
-              </Flex>
-              <Text fontSize="sm" fontWeight="500" color="secondaryGray.500">
-                Only txt files are allowed
-              </Text>
-            </Box>
-          }
-        />
-        {/*  <Dropzone onDrop={onDrop}>*/}
-        {/*    {({getRootProps, getInputProps}) => (*/}
-        {/*      <div {...getRootProps()}>*/}
-        {/*        <input {...getInputProps()} />*/}
-        {/*        Click me to upload a file!*/}
-        {/*      </div>*/}
-        {/*    )}*/}
-        {/*  </Dropzone>*/}
         <Flex direction="column" pe="44px">
           <Text
             color={textColorPrimary}
@@ -55,18 +46,25 @@ export default function Upload(props) {
           >
             Upload a file
           </Text>
+          <div style={{paddingTop:'20px'}}>
+            <Input variant="filled" type="file" name="file" onChange={changeHandler} />
+            {isSelected && (
+              <div>
+                <p>Size: {(selectedFile.size/1048576).toFixed(2)} Mb</p>
+              </div>
+            )}
+            <div>
+              <Button variant="brand" onClick={handleSubmission}>
+                {isLoading ? 'Loading' : 'Upload'}
+              </Button>
+            </div>
+          </div>
+          <Flex>
+            <Text align={"center"}>
+              {uploadStatus}
+            </Text>
+          </Flex>
           <Flex w="100%">
-            <Button
-              me="100%"
-              mb="50px"
-              w="140px"
-              minW="140px"
-              mt={{ base: "20px", "2xl": "auto" }}
-              variant="brand"
-              fontWeight="500"
-            >
-              Upload now
-            </Button>
           </Flex>
         </Flex>
       </Flex>
