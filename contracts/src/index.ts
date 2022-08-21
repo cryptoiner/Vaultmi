@@ -1,3 +1,3 @@
-import { Contract } from './Contract.js';
+import { Vaultmi } from './Vaultmi.js';
 
-export { Contract };
+export { Vaultmi };
