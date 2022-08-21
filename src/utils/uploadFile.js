@@ -1,5 +1,8 @@
 import { Web3Storage } from "web3.storage";
-let secrets = require("@134dd3v/secrets.js")
+// const {
+//   Encryption,
+//   Encoding
+// } = require('snarkyjs');
 
 const client = new Web3Storage({
   token:
@@ -7,25 +10,23 @@ const client = new Web3Storage({
 });
 
 const encryptShare = (address, share) => {
-
+  // let messageFields = Encoding.stringToFields(share);
+  // return Encryption.encrypt(messageFields, address);
 }
 
-const decryptShare = (hash ) => {
-
+const decryptShare = (hash) => {
+  // let file = downloadFile(hash);
+  // let decryptedFields = Encryption.decrypt(file, privateKey);
+  // let decryptedMessage = Encoding.stringFromFields(decryptedFields);
 }
 
 
-export const uploadFile = async (walletAddress, userAddress) => {
-    const fileInput = document.querySelector('input[type="file"]')
-    const secretFile = Buffer.from(fileInput).toString()
-    const shares = secrets.share(secretFile, 2, 2)
-    const primarySharedEncrypted = encryptShare(shares.slice(0,1))
-    const secondarySharedEncrypted = encryptShare(shares.slice(1,2))
-    const primaryCid = await client.put([new File(primarySharedEncrypted)]);
-    const secondaryCid = await client.put([new File(secondarySharedEncrypted)]);
-    const infoPrimary = await client.status(primaryCid);
-    const infoSecondary = await client.status(secondaryCid);
-    return [infoPrimary.cid, infoSecondary.cid]
+export const uploadFile = async () => {
+  const fileInput = document.querySelector('input[type="file"]')
+  const rootCid = await client.put(fileInput.files);
+  const info = await client.status(rootCid);
+  console.log(info);
+  return info.cid
 };
 
 export const downloadFile = async (cid) => {

@@ -31,9 +31,10 @@ export default function Upload(props) {
   const handleSubmission = async () => {
     setIsLoading(true)
     const cid = await uploadFile(address,selectedAddress)
+    console.log(cid)
     setIsLoading(false)
     if(!!cid) {
-      setUploadStatus('Uploaded')
+      setUploadStatus('Uploaded cid:' + cid)
     }else{
       setUploadStatus('Failed')
     }

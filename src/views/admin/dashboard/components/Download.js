@@ -6,31 +6,24 @@ import {
 import Card from "components/card/Card.js";
 import React, { useState } from "react";
 import { Input, Button } from '@chakra-ui/react'
-import { downloadFile, uploadFile } from "../../../../utils/uploadFile";
+import { downloadFile } from "../../../../utils/uploadFile";
 
 export default function Download(props) {
   const { used, total, address, ...rest } = props;
   const textColorPrimary = useColorModeValue("secondaryGray.900", "white");
-  const [selectedFile, setSelectedFile] = useState();
   const [selectedHash, setSelectedHash] = useState();
-  const [isSelected, setIsSelected] = useState(false);
+  const [file, setFile] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
-  const [uploadStatus, setUploadStatus] = useState('')
 
   const changeHandlerHash = (event) => {
-    setUploadStatus('');
     setSelectedHash(event.target.value);
   };
 
   const handleSubmission = async () => {
     setIsLoading(true)
-    const cid = await downloadFile(address,selectedAddress)
+    const cid = await downloadFile(selectedHash)
     setIsLoading(false)
-    if(!!cid) {
-      setUploadStatus('Uploaded')
-    }else{
-      setUploadStatus('Failed')
-    }
+    setFile(cid[0])
   };
 
   return (
@@ -44,7 +37,7 @@ export default function Download(props) {
             fontSize="2xl"
             mt={{ base: "20px", "2xl": "50px" }}
           >
-            Download a file
+            Verify a file
           </Text>
           <div style={{paddingTop:'20px'}}>
             <Input placeholder={"Hash"} variant="filled" type="text" name="text" onChange={changeHandlerHash} />
@@ -56,7 +49,7 @@ export default function Download(props) {
           </div>
           <Flex>
             <Text align={"center"}>
-              {uploadStatus}
+              {file.name} {file.type} {file.size}
             </Text>
           </Flex>
           <Flex w="100%">
