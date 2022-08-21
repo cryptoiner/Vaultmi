@@ -9,6 +9,10 @@ import {
 } from 'snarkyjs';
 import File from './File';
 
+/**
+ * This contract stores the IPFS hash that references the two parts of an encrypted file.
+ * Each part has an owner. The owner and the IPFS hash is called File.
+ */
 export class Vaultmi extends SmartContract {
   @state(File) file0 = State<File>();
   @state(File) file1 = State<File>();
@@ -30,10 +34,10 @@ export class Vaultmi extends SmartContract {
   }
 
   @method isFile0Owner(_publicKey: PublicKey) {
-    this.file0.get().isOwner(_publicKey)
+    this.file0.get().isOwner(_publicKey);
   }
 
   @method isFile1Owner(_publicKey: PublicKey) {
-    this.file1.get().isOwner(_publicKey)
+    this.file1.get().isOwner(_publicKey);
   }
 }
